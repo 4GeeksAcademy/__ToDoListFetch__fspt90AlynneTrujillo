@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
-import { faList, faTasks } from "@fortawesome/free-solid-svg-icons";
-
 
 
 const ToDoList = () => {
@@ -22,16 +20,22 @@ const ToDoList = () => {
     fetch("https://playground.4geeks.com/todo/todos/1", {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", //this sets the request header to specify that the body of the request contains json data
       },
-      body: JSON.stringify(updatedTasks),
+      body: JSON.stringify(updatedTasks), //the body of the request is set to the updatedTasks arg, converted to a JSON string
     })
       .then((response) => response.json())
       .then(() => setToDoItem(updatedTasks))
       .catch((error) => console.error(error));
   };
 
-  // Add a new task
+/*
+Add a new task.. 
+the trim is used to check if newItem is not empty 
+after removing whitespace. if newItem is only 
+whitespace, the function will not proceed 
+to add the item.
+*/
   const handleAddNewItem = () => {
     if (newItem.trim()) {
       const updatedTasks = [...toDoItem, newItem.trim()];
@@ -46,8 +50,12 @@ const ToDoList = () => {
       handleAddNewItem();
     }
   };
-
-  // Delete a specific task
+/*
+Delete a specific task
+line #61- the filter method provides 2 args to the 
+callback function, the current element(which we don't
+ use here, hence the underscore and it's index (i))
+*/
   const handleDeleteAnyItem = (index) => {
     const updatedTasks = toDoItem.filter((_, i) => i !== index);
     updateTasksOnServer(updatedTasks);
